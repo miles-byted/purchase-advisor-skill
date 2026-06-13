@@ -105,9 +105,16 @@ skills/cross-lingual-purchase-advisor/
 合格表现：九步全有输出、含 ≥1 不推荐项、有反事实去偏结论、给出年度总成本数字、确认国行渠道。
 想看输出长什么样？→ [一篇真实交叉验证实录](skills/cross-lingual-purchase-advisor/examples/robot-vacuum-walkthrough.md)（含中英信源对照、假洋品牌排查、年度成本估算）。
 
-## 致谢
+## 致谢与同类
 
-- 反营销 / owner-only 信源思路 — [199-biotechnologies/product-research](https://github.com/199-biotechnologies/product-research)
+诚实区分"真借鉴"和"平行同类"——学手艺不偷皮，没借鉴的不冒充来源。
+
+**真借鉴（具体设计源于此）：**
+- [199-biotechnologies/product-research](https://github.com/199-biotechnologies/product-research) — 本 skill 的**反事实去偏**（第四步半）与**营销词黑名单**（第三步）直接学自它的 counterfactual bias check 与 owner-only/禁用营销词手艺。
+
+**理念启发（方向沾边，无具体借鉴）：**
+
+**平行同类（独立作品，非来源）：**
 
 ## License
 
