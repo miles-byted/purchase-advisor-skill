@@ -77,7 +77,7 @@ description: Rigorous independent-review cross-validation methodology for produc
 | 伪客观 | 业内公认 · 大家都说 · 销量第一（无来源） | industry-standard · everyone agrees | 要求出处；无出处则不采信 |
 | 参数障眼 | 最大吸力（回避日常档） · 高达 XX 万帕（无实测） | up to XX Pa（peak-only） | 只认实测/日常模式数字 |
 
-> 准则（致谢 199-biotech 的 owner-only/反营销手艺，见 README 文末）：**一个信源越是用形容词代替数字、用催单代替对比，它越可能是软文。** 真正的独立测评会告诉你"它哪里不好"。
+> 准则（致谢 199-biotech 的"只信真买真用的一手反馈（owner-only）/反营销"手艺，见 README 文末）：**一个信源越是用形容词代替数字、用催单代替对比，它越可能是软文。** 真正的独立测评会告诉你"它哪里不好"。
 
 ## 第四步：交叉验证（必须输出对比表）
 

@@ -74,7 +74,7 @@ npx skills add miles-byted/purchase-advisor-skill
 
 | 维度 | 一般购物 skill | 英文反营销 skill | **本 skill** |
 |---|---|---|---|
-| 信源 | 单边榜单 | 英文 owner-only | **中英双语交叉验证** |
+| 信源 | 单边榜单 | 英文一手用家反馈 | **中英双语交叉验证** |
 | AI 自身偏见 | 不处理 | 反事实去偏 | **反事实去偏 ✅** |
 | 假洋品牌 | 不识别 | 不识别 | **专项排查 ✅** |
 | 大陆可购性 | 不管 | 不管 | **国行/电压/质保确认 ✅** |
@@ -107,7 +107,7 @@ skills/cross-lingual-purchase-advisor/
 
 ## 致谢
 
-- 反营销 / owner-only 信源思路 — [199-biotechnologies/product-research](https://github.com/199-biotechnologies/product-research)
+- 反营销 / 只信真买真用的一手反馈（owner-only）的信源思路 — [199-biotechnologies/product-research](https://github.com/199-biotechnologies/product-research)
 
 ## License
 
