@@ -6,7 +6,7 @@
 
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-cross--lingual--purchase--advisor-blueviolet)](skills/cross-lingual-purchase-advisor/SKILL.md)
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-D97757?logo=anthropic&logoColor=white)](https://docs.claude.com/en/agents-and-tools/agent-skills/overview)
-[![skills.sh](https://img.shields.io/badge/skills.sh-install-000000)](https://skills.sh/miles-byted/purchase-advisor-skill)
+[![skills.sh](https://skills.sh/b/miles-byted/purchase-advisor-skill)](https://skills.sh/s/miles-byted/purchase-advisor-skill)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **把"被返佣榜单、厂商软文、刷量水帖污染的 AI 选购建议"，变成中英测评交叉验证、识破假洋品牌、确认国行质保的可执行结论。**
