@@ -81,7 +81,6 @@ npx skills add miles-byted/purchase-advisor-skill
 | 持有成本 | 只看售价 | 偶尔 | **强制量化年度总成本 ✅** |
 
 > 学手艺不偷皮：反营销叙事与反事实去偏的思路，致谢见文末。
->
 
 ## 安全边界
 
@@ -108,11 +107,7 @@ skills/cross-lingual-purchase-advisor/
 
 ## 致谢
 
-学手艺不偷皮，据实区分借鉴深浅：
-
-- **真借鉴** — [199-biotechnologies/product-research](https://github.com/199-biotechnologies/product-research)：本 skill 的**反事实去偏**（第四步半）与**营销词黑名单**（第三步）直接学自它的 counterfactual bias check 与 owner-only/禁用营销词手艺。
-
-> 独立同类项（思路相似但各自独立开发，非来源）见上方[「它和同类有什么不同」](#它和同类有什么不同)。
+- 反营销 / owner-only 信源思路 — [199-biotechnologies/product-research](https://github.com/199-biotechnologies/product-research)
 
 ## License
 
