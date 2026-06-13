@@ -66,6 +66,19 @@ description: Rigorous independent-review cross-validation methodology for produc
 
 输出：搜索源、每源 Top 具体型号、可信度评估（自费？带货？）、不推荐信息。
 
+### 营销词黑名单（带货/软文的语言指纹）
+
+把"语气"变成可执行的判别器：命中下列词，**不是直接排除信源，而是把它降一级、要求另一独立源复核**；自己的输出里也**禁止**用这些词描述产品（除非直接引用他人）。
+
+| 类型 | 命中词（中文） | 命中词（英文） | 触发动作 |
+|---|---|---|---|
+| 催单话术 | 闭眼入 · 直接冲 · 无脑买 · yyds · 一步到位 · 真香 · 抄作业 | buy it now · no-brainer · just get it | 信源降级，需第二独立源复核 |
+| 空洞溢美 | 天花板 · 王炸 · 神机 · 封神 · 吊打 · 碾压 · 遥遥领先 | flagship · class-leading · best-in-class · game-changer · unrivalled | 删除该形容，只认实测数字 |
+| 伪客观 | 业内公认 · 大家都说 · 销量第一（无来源） | industry-standard · everyone agrees | 要求出处；无出处则不采信 |
+| 参数障眼 | 最大吸力（回避日常档） · 高达 XX 万帕（无实测） | up to XX Pa（peak-only） | 只认实测/日常模式数字 |
+
+> 准则（致谢 199-biotech 的 owner-only/反营销手艺，见 README 文末）：**一个信源越是用形容词代替数字、用催单代替对比，它越可能是软文。** 真正的独立测评会告诉你"它哪里不好"。
+
 ## 第四步：交叉验证（必须输出对比表）
 
 | 品牌/型号 | 英文结果 | 中文结果 | 判定 |
