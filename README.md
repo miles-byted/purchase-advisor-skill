@@ -6,7 +6,7 @@
 
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-cross--lingual--purchase--advisor-blueviolet)](skills/cross-lingual-purchase-advisor/SKILL.md)
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-D97757?logo=anthropic&logoColor=white)](https://docs.claude.com/en/agents-and-tools/agent-skills/overview)
-[![skills.sh](https://img.shields.io/badge/skills.sh-install-000000)](https://skills.sh/miles-byted/purchase-advisor-skill)
+[![skills.sh](https://skills.sh/b/miles-byted/purchase-advisor-skill)](https://skills.sh/s/miles-byted/purchase-advisor-skill)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **把"被返佣榜单、厂商软文、刷量水帖污染的 AI 选购建议"，变成中英测评交叉验证、识破假洋品牌、确认国行质保的可执行结论。**
@@ -96,13 +96,14 @@ skills/cross-lingual-purchase-advisor/
 ├── references/
 │   └── trusted-reviewers.md      # 可信测评站名录 + 独立性/行货判断表
 └── examples/
-    └── robot-vacuum-walkthrough.md  # 一篇真实选购实录
+    └── robot-vacuum-walkthrough.md  # 真实选购实录（型号/测评立场均来自可点击信源，11 条 URL 实测可达）
 ```
 
 ## 验证与测试
 
 验收 prompt：`帮我选一台 2000 元内、扫拖一体的扫地机器人`
 合格表现：九步全有输出、含 ≥1 不推荐项、有反事实去偏结论、给出年度总成本数字、确认国行渠道。
+想看输出长什么样？→ [一篇真实交叉验证实录](skills/cross-lingual-purchase-advisor/examples/robot-vacuum-walkthrough.md)（含中英信源对照、假洋品牌排查、年度成本估算）。
 
 ## 致谢
 
