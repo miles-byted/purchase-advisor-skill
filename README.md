@@ -96,13 +96,14 @@ skills/cross-lingual-purchase-advisor/
 ├── references/
 │   └── trusted-reviewers.md      # 可信测评站名录 + 独立性/行货判断表
 └── examples/
-    └── robot-vacuum-walkthrough.md  # 一篇真实选购实录
+    └── robot-vacuum-walkthrough.md  # 真实选购实录（型号/测评立场均来自可点击信源，11 条 URL 实测可达）
 ```
 
 ## 验证与测试
 
 验收 prompt：`帮我选一台 2000 元内、扫拖一体的扫地机器人`
 合格表现：九步全有输出、含 ≥1 不推荐项、有反事实去偏结论、给出年度总成本数字、确认国行渠道。
+想看输出长什么样？→ [一篇真实交叉验证实录](skills/cross-lingual-purchase-advisor/examples/robot-vacuum-walkthrough.md)（含中英信源对照、假洋品牌排查、年度成本估算）。
 
 ## 致谢
 
