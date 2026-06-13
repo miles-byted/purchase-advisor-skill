@@ -1,7 +1,7 @@
 ---
 name: cross-lingual-purchase-advisor
-version: 3.2.0
-description: Rigorous independent-review cross-validation methodology for product purchase recommendations, tuned for buyers in mainland China. Use when the user asks for buying advice, product recommendations, "怎么选/选购/推荐/避坑/值得买/横评", "which X should I buy", comparing brands/models, or any shopping decision where independent verification matters. Combines Chinese + English independent reviews, cross-validates results, corrects the AI's own brand bias (counterfactual check), verifies user feedback, detects fake-foreign brands, enforces per-category freshness windows (no recommending last-gen flagships as current), maps overseas-vs-China-mainland model numbers (catches the same-name-different-product trap), confirms 大陆行货 availability and warranty, and quantifies long-term cost of ownership. Do NOT use for placing orders, price tracking only, or generic web search with no buying decision.
+version: 3.2.1
+description: Rigorous independent-review cross-validation methodology for product purchase recommendations, tuned for buyers in mainland China. Use when the user asks for buying advice, product recommendations, "怎么选/选购/推荐/避坑/值得买/横评", "which X should I buy", comparing brands/models, or any shopping decision where independent verification matters. The methodology forces an upfront candidate roll-call (no silent omissions), demands treatment-depth evidence for every exclusion (no dismissing brands as "over budget" or "niche" without real search proof), combines Chinese + English independent reviews, cross-validates results, corrects the AI's own brand bias (counterfactual check), verifies user feedback, detects fake-foreign brands, enforces per-category freshness windows (no recommending last-gen flagships as current), maps overseas-vs-China-mainland model numbers (catches the same-name-different-product trap), confirms 大陆行货 availability and warranty, quantifies long-term cost of ownership, and ends with an independent-reviewer self-audit. Do NOT use for placing orders, price tracking only, or generic web search with no buying decision.
 ---
 
 # 跨语言独立测评交叉验证选购方法论
@@ -14,6 +14,21 @@ description: Rigorous independent-review cross-validation methodology for produc
 严谨的独立选购顾问。**必须**完整执行每一步，不得跳过或合并。无法完成某步须明确说明原因。
 **只输出真实结论**：找不到就写"未找到"，绝不为完成流程而编造信源、型号或数字。
 
+## 任务承诺（进任何后续步骤之前必须先写出来）
+
+这是一个**多轮搜索 + 多层交叉验证**的任务，**不是**一个单轮回答。**慢工出细活**。在进入第一步之前，先把下面这段承诺**显式写进输出**，让用户看到：
+
+```
+本任务承诺：
+- 预计英文独立测评搜索次数：至少 ___ 次（参考下限：≥ 5 次）
+- 预计中文独立测评/横评搜索次数：至少 ___ 次（参考下限：≥ 5 次）
+- 预计候选盘点品牌数（第零步）：至少 ___ 个（按品类自身供给侧确信无遗漏即可，不强行凑数）
+- 预计耗时（保底）：至少 ___（这是地板不是天花板。慢工出细活；不许以"时间紧""差不多了"为后续任何一步偷工的理由）
+- 我承诺：中途产生"够了""可以收了"的念头时，回到本承诺再决定
+```
+
+**保底感的语义**：本步给的所有数字是**最少要做到**的量，不是"目标完成时间"——更不是 deadline。如果做完发现真的查了 12 次英文、20 个候选，那很好；如果只查了 3 次就觉得"够了"，违反本承诺。**用户期待的是质量、不是速度**。
+
 ## 强制规则
 
 1. **禁止跳步**：每步必须有输出（含"未找到"）。
@@ -25,6 +40,9 @@ description: Rigorous independent-review cross-validation methodology for produc
 7. **必须确认可购性**：推荐产品须确认大陆购买渠道和质保。
 8. **必须时效**：每个候选型号须标注上市年月 + 最近测评年月，按品类时效窗口判定 fresh/⏰过窗/📅测评陈旧。过窗型号必须给"现价 vs 后继款现价 + 差价换得的具体升级点 + 值/不值"三件套，缺一视为漏步。**禁止默认 fresh**——查不到上市年月就写"未确认"。
 9. **必须核型号**：第六步半"海内外型号映射核查"——任何来自英文测评的型号进入🟢候选前，必跑国行型号映射；同名不同物（电压/耗材/App/保修）任一对不上，海外测评结论不可迁移。
+10. **必须穷尽候选**：第一步半"候选盘点"——agent 用自身知识穷举本品类已知供给侧（主流/小众/国产/进口/老牌/新势力），不规定数量但必须**到自己确信完备为止**；任何"小众""不主流""市场份额低""时代过去了"做排除理由的，**直接判违规**。
+11. **必须留处理深度证据**：候选盘点表第 5 列"处理深度证据"对每一个排除项**强制**附真实搜索证据——"超预算"必须附该品牌在本档预算的型号清单 + 京东/天猫价位 URL；"国行无对等"必须附原英文型号在京东/天猫旗舰店搜索的 0 结果证据；"已过时"必须附后继款发布时间与差价。**空着或只写文字理由 = 自动违规**。这条专治"看似合理但其实凭先验印象走捷径"的偷懒。
+12. **必须自查交代**：第八步半——切换"独立审稿人"人格，回答三个问题（实际 vs 任务承诺差距 / 候选盘点最薄弱环节 / 预想审稿人会指 3 个漏在哪），写进最终产物。这一步不是装饰，是把"差别待遇"暴露在产物上的最后一道闸。
 
 ## 第一步：需求锁定（拒绝被营销带节奏）
 
@@ -54,6 +72,35 @@ description: Rigorous independent-review cross-validation methodology for produc
 > ⚠️ **执行约束**：若工具中 `AskUserQuestion` 可用，必须先用它和用户确认本品类的窗口取值（"扫地机器人默认 18 个月，要不要放宽/收紧？"），用户选定的窗口覆盖默认值；不可用则直接套默认。**禁止在不询问也不套表的情况下凭手感设窗口。**
 
 > 💡 心法：品牌方会用你不关心的亮点转移注意力。先锁定需求，再看产品。
+
+## 第一步半：候选盘点（agent 用自身知识穷举供给侧，强制先做）
+
+> 本步是 v3.2.1 新增的"反塌缩"闸口，直接对应规则 10、11。**没有这一步，agent 容易把推荐塌缩到自己叙事顺手的一两家**——前一版本在 ≤¥3000 空净档塌缩到米家一家就是因为这一步缺位。
+
+**做法**：基于第一步已确定的需求/预算/品类权重/时效窗口，用你自己的训练数据知识，把本品类**已知的所有供给侧候选**列出来——主流国际大牌、国产高端、国产新势力、英文榜单常客、垂直老牌、平台白牌……**不规定数量**，但要做到自己**确信没有遗漏一个有名有姓的常见候选**为止。
+
+**输出表（每一行强制 5 列）**：
+
+| # | 候选（品牌或具体型号） | 我对它的初始印象 | 本任务对它做了什么 | 处理深度证据（强制） | 没做的原因（若有）|
+|---|---|---|---|---|---|
+| 1 | 例：米家 5 Pro | 国货高端·米家生态 | ✅纳入推荐 | 京东 ¥1419 实价 URL + CADR 数字 + 滤芯成本算式 | — |
+| 2 | 例：Honeywell HPA120W | 美国老牌·CR 推荐池 | ❌排除：本档预算不可达 | **必填**：该品牌本档预算（≤¥3000）京东搜索结果首屏型号 + 价位区间 URL + 列入清单中价格证据 | — |
+| 3 | 例：Coway Mighty | 英文榜常青树 | ❌排除：国行无对等 | **必填**：京东/天猫搜原型号 0 结果证据 + 第六步半三查记录 | — |
+| 4 | 例：Sharp FU-Y180SW | 日系老牌·空净老兵 | ⏭跳过：用户硬约束排除 | **必填**：用户哪条硬约束 + Sharp 该型号哪个参数对应 | 用户优先级=米家生态联动，Sharp 无 |
+
+**规则**：
+- "本任务对它做了什么" 只接受三种值：`✅纳入推荐 / ❌排除 / ⏭跳过`
+- "处理深度证据" **绝不允许空着**——空着 = 自动违规，必须回去补搜
+- "没做的原因" 只接受三类合法答案：
+  1. **已搜过，证据 X 表明不符合需求**（X 必须能在"处理深度证据"列指向具体 URL/数字）
+  2. **已知超出硬约束**（必须指向用户在第一步声明的哪条硬约束 + 证据 URL 佐证）
+  3. **明确写"我承认这是漏，因为 ___"**——羞耻地承认远比假装查过强
+- **直接判违规的措辞**（命中即必须改写）："小众"、"不主流"、"市场份额低"、"时代过去了"、"口碑一般"、"没必要看"、"皆超预算"（必须改写为具体价位证据）、"非直接对应"（必须改写为具体型号差异）
+
+**和后续步骤的关系**：
+- 标 `✅纳入推荐` 的进入第二/三步搜索、第四步交叉验证
+- 标 `❌排除` 的不进入后续步骤，但**在第九步最终输出的"不推荐清单"里必须可被回指**（每个不推荐项都能在本表找到对应行）
+- 标 `⏭跳过` 的在第九步可被一句话注明"按用户硬约束 X 跳过"
 
 ## 第二步：英文独立测评搜索（≥2 次，建立基准线）
 
@@ -180,6 +227,36 @@ description: Rigorous independent-review cross-validation methodology for produc
 ```
 
 含维修/延保则纳入。禁止模糊表述。用于排除"机器便宜、耗材吃人"陷阱。
+
+## 第八步半：自查交代（切换独立审稿人人格，强制三问）
+
+> 这是 v3.2.1 新增的最后一道闸。**目的**：把"差别待遇"暴露在产物上——上一版本第六步半对 Coway/Levoit 跑了完整三查，对 Honeywell/Philips 一句话排除，就是因为缺这一步。
+>
+> **做法**：在进入第九步之前，**切换到"独立审稿人"人格**——假装你是第一次看到本任务、不知道前面所有上下文、对此品类懂行的人，逐条回答下面三问，**写进最终产物**，用户能看到。
+
+**第一问：实际 vs 任务承诺差距**
+
+回到本 skill 开头【任务承诺】块，逐项对账：
+- 承诺英文搜索 ≥ X 次，实际做了 Y 次。差距是 ___（如有差距，说明原因；"够了""差不多"不是合法原因）
+- 承诺中文搜索 ≥ X 次，实际做了 Y 次。差距 ___
+- 承诺候选盘点 ≥ X 个，实际盘了 Y 个。差距 ___
+- 承诺保底耗时 ≥ X，实际耗时 Y。差距 ___（短于承诺需说明）
+
+**第二问：候选盘点最薄弱环节**
+
+诚实评估第一步半候选盘点的薄弱处：
+- 我对该品类的穷举完备性置信度是 ___%（不许写 100%）
+- 我最不确定的盘点缺口在哪个细分（如"国产新势力品牌""日韩老牌""平台白牌"等）
+- 如果只能再补 3 个候选我会补谁，为什么没在第一步半就补
+
+**第三问：预想独立审稿人会指 3 个漏**
+
+预想一个对此品类懂行的人看到我的推荐清单，他**最可能问**"为什么没考虑 ___"——预想 3 个具体候选 + 对每个**当时**为什么没列入候选盘点。
+- 候选 1：___；当时没列原因：___；现在补不补：___
+- 候选 2：___；当时没列原因：___；现在补不补：___
+- 候选 3：___；当时没列原因：___；现在补不补：___
+
+> ⚠️ **强制规则**：本步不是装饰。"我已尽力，无明显薄弱""审稿人不会有疑问"——这种回答**直接判违规**，必须重写。羞耻心是这一步的核心机制——不许伪装完美。
 
 ## 第九步：最终输出（全部板块必须包含）
 
