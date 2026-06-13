@@ -1,7 +1,7 @@
 ---
 name: cross-lingual-purchase-advisor
-version: 3.1.0
-description: Rigorous independent-review cross-validation methodology for product purchase recommendations, tuned for buyers in mainland China. Use when the user asks for buying advice, product recommendations, "怎么选/选购/推荐/避坑/值得买/横评", "which X should I buy", comparing brands/models, or any shopping decision where independent verification matters. Combines Chinese + English independent reviews, cross-validates results, corrects the AI's own brand bias (counterfactual check), verifies user feedback, detects fake-foreign brands, confirms 大陆行货 availability and warranty, and quantifies long-term cost of ownership. Do NOT use for placing orders, price tracking only, or generic web search with no buying decision.
+version: 3.2.0
+description: Rigorous independent-review cross-validation methodology for product purchase recommendations, tuned for buyers in mainland China. Use when the user asks for buying advice, product recommendations, "怎么选/选购/推荐/避坑/值得买/横评", "which X should I buy", comparing brands/models, or any shopping decision where independent verification matters. Combines Chinese + English independent reviews, cross-validates results, corrects the AI's own brand bias (counterfactual check), verifies user feedback, detects fake-foreign brands, enforces per-category freshness windows (no recommending last-gen flagships as current), maps overseas-vs-China-mainland model numbers (catches the same-name-different-product trap), confirms 大陆行货 availability and warranty, and quantifies long-term cost of ownership. Do NOT use for placing orders, price tracking only, or generic web search with no buying decision.
 ---
 
 # 跨语言独立测评交叉验证选购方法论
@@ -23,6 +23,8 @@ description: Rigorous independent-review cross-validation methodology for produc
 5. **必须去偏**：须对候选做一次反事实检验（第四步半），纠正 AI 自身的品牌先验。
 6. **必须量化**：输出须含长期持有成本数字估算。
 7. **必须确认可购性**：推荐产品须确认大陆购买渠道和质保。
+8. **必须时效**：每个候选型号须标注上市年月 + 最近测评年月，按品类时效窗口判定 fresh/⏰过窗/📅测评陈旧。过窗型号必须给"现价 vs 后继款现价 + 差价换得的具体升级点 + 值/不值"三件套，缺一视为漏步。**禁止默认 fresh**——查不到上市年月就写"未确认"。
+9. **必须核型号**：第六步半"海内外型号映射核查"——任何来自英文测评的型号进入🟢候选前，必跑国行型号映射；同名不同物（电压/耗材/App/保修）任一对不上，海外测评结论不可迁移。
 
 ## 第一步：需求锁定（拒绝被营销带节奏）
 
@@ -40,6 +42,17 @@ description: Rigorous independent-review cross-validation methodology for produc
 
 品类不确定时先判定归属再执行。
 
+- **品类时效窗口**（fallback 默认值，触发第二/三/四步的 fresh 判定）：
+
+| 品类 | 型号窗口 | 测评窗口 | 依据 |
+|---|---|---|---|
+| 手机 / 笔记本 / 平板 | 12 个月 | 12 个月 | 一年一代 |
+| 扫地机 / 空净 / 智能小家电 / 耳机 | 18 个月 | 18 个月 | 1.5–2 年一代 |
+| 大家电（冰箱 / 洗衣机 / 烤箱 / 除湿机） | 36 个月 | 24 个月 | 迭代慢、平台型号多年在售 |
+| 户外 / 厨具 / 无电子件 | 60 个月 | 36 个月 | 几乎不迭代 |
+
+> ⚠️ **执行约束**：若工具中 `AskUserQuestion` 可用，必须先用它和用户确认本品类的窗口取值（"扫地机器人默认 18 个月，要不要放宽/收紧？"），用户选定的窗口覆盖默认值；不可用则直接套默认。**禁止在不询问也不套表的情况下凭手感设窗口。**
+
 > 💡 心法：品牌方会用你不关心的亮点转移注意力。先锁定需求，再看产品。
 
 ## 第二步：英文独立测评搜索（≥2 次，建立基准线）
@@ -51,7 +64,17 @@ description: Rigorous independent-review cross-validation methodology for produc
 
 **可信测评站名录 + 独立性判断表见 `references/trusted-reviewers.md`**（按需加载）。一句话准则：**优先信任会告诉你"不要买什么"的测评者。**
 
-输出：搜索源、每源 Top 具体型号、可信度评估（自费？联盟链接？）、不推荐信息。
+输出（**每个型号必须含时效列**）：
+
+| 型号 | 上市年月 | 最近测评年月 | 京东/天猫旗舰店在售? | 信源 | 可信度 | 不推荐? |
+|---|---|---|---|---|---|---|
+
+时效判定（套用第一步窗口）：
+- 两个年月均 ≤ 窗口 → ✅ fresh
+- 上市年月 > 窗口 → ⏰ 过窗，强制三件套（现价 vs 后继款现价 + 差价换得的具体升级点 + 值/不值结论）
+- 测评年月 > 窗口 → 📅 测评陈旧，再搜一篇 ≤ 12 月的实测复核，否则降级 🟡
+- 京东/天猫旗舰**全无在售** → 🛒 渠道死亡，**标记不剔除**；强制进入第七步代购通道判定，不满足代购条件再剔除
+- 上市年月查不到 → 写"未确认"，**不许默认 fresh**
 
 ## 第三步：中文独立测评搜索（≥2 次，本地验证）
 
@@ -64,7 +87,7 @@ description: Rigorous independent-review cross-validation methodology for produc
 
 > ⚠️ 如果文章结尾都是京东/天猫链接、语气是"闭眼入""直接冲"，大概率带货。
 
-输出：搜索源、每源 Top 具体型号、可信度评估（自费？带货？）、不推荐信息。
+输出：使用第二步的同一张表（型号 / 上市年月 / 最近测评年月 / 京东·天猫旗舰店在售? / 信源 / 可信度 / 不推荐?），时效判定规则相同。
 
 ### 营销词黑名单（带货/软文的语言指纹）
 
@@ -127,11 +150,27 @@ description: Rigorous independent-review cross-validation methodology for produc
 
 输出：真实国际品牌 / 疑似假洋品牌 / 无法确认。**判定须附上四查里命中的具体红旗，不许只给结论。**
 
+## 第六步半：海内外型号映射核查（同名不同物坑）
+
+**触发**：任一英文测评推荐的型号将进入 🟢 候选时**必跑**。海外好评不可直接迁移到国行同名机型——美的除湿机海外型号 ≠ 国行型号、戴森海外/国行电压不同、扫地机海外型号常无中文 App，都是真实坑。
+
+**三查**：
+
+| # | 查什么 | 露馅信号（红旗） |
+|---|---|---|
+| 1 | **国行电商搜原英文型号**（京东/天猫旗舰） | **全无结果** → 国行未引进，海外测评结论不可迁移 |
+| 2 | **搜"品牌名 中国 同等机型 型号映射" / 官网中国站对照** | 国行型号是另一个编号（如美的除湿机海外/国行型号编号体系完全不同，海外评测里的型号在国行电商搜不到），需逐项核对参数 |
+| 3 | **关键差异核对清单** | 电压(110V/220V) / 频率(50/60Hz) / 耗材编号是否通用 / App 是否支持中文+中国账号 / 保修是否限地区 / 固件功能是否阉割或增强 |
+
+**输出**：写一张"海外型号 → 国行型号 → 差异"映射表。任一条对不上 → 海外测评结论不可套用到国行机型，该候选降级或剔除，并在最终输出注明"海外好评不等于国行同等表现"。
+
 ## 第七步：大陆行货与质保确认
 
 > 🇨🇳 优先国行；代购仅在国行无对等替代且产品显著领先时才考虑。
 
-行货 vs 代购判定表、可代购的全满足条件见 `references/trusted-reviewers.md`。也要核查：海外型号 vs 国行型号差异（电压、功能阉割/增强）。
+行货 vs 代购判定表、可代购的全满足条件见 `references/trusted-reviewers.md`。
+
+**与第六步半的衔接**：来自英文测评的型号已在第六步半做过映射核查；本步专注**国行型号本身**的渠道与质保——京东自营 / 天猫旗舰是否有售、3C 认证、保修期、售后网点。第二/三步中标 🛒 渠道死亡的型号在这里走代购通道判定，不满足代购条件再剔除。
 
 ## 第八步：长期持有成本（必须输出数字）
 
@@ -161,7 +200,25 @@ description: Rigorous independent-review cross-validation methodology for produc
 
 - 当前日期通过 `date` 命令获取后填入流程。
 - 用户在中国大陆使用产品，追求品质生活。
-- **搜索实搜**：可用 Exa（`exa-search` skill）做检索 + 正文抽取，或 browser_use（Google/Bing 看英文站；百度/必应/B 站/知乎/小红书/什么值得买 看中文）。每个来源点开读正文再下结论。任一工具连续失败就换另一条路线，不要原地重试。
-- 仅在交互中发现可改进点时用 memory_write 记录改进经验（简短精要、凝练教训），不做会话流水账。
 
-**核心逻辑：独立性 × 交叉验证 × 去偏 × 本地可保 = 接近真相的最优解。**
+### Web Access Strategy（按可用性自适应，不绑死任何一个）
+
+时效性强约束（规则 8）需要按发布日期过滤搜索结果。**优先级**：
+
+1. **Exa MCP（`mcp__exa__web_search_exa` 或等价）** — 首选。`advanced` 参数支持 `startPublishedDate` / `endPublishedDate` 精确过滤，正中"型号是否仍 fresh"的需求。建议参数：搜英文测评时 `startPublishedDate` 设为"当日 − 品类测评窗口"，确保返回结果都在窗口内；搜中文实测时同样。
+2. **`exa-search` skill** — 兼容旧 skill 调用方式。
+3. **`WebSearch` / `WebFetch`** — 内置工具，无时间过滤参数，需要 agent 自己读返回页面的发布日期判断。
+4. **browser_use / curl** — 最后的回退（Google/Bing 看英文、百度/B 站/知乎/小红书/什么值得买 看中文）。
+
+每个信源点开正文再下结论，不凭标题或记忆。任一工具连续失败立刻换路线，不要原地重试。
+
+### 询问用户（AskUserQuestion）
+
+- 第一步的**品类时效窗口**：若工具可用，必须先确认窗口取值，不可用则套默认表。
+- 其他需要用户主观判断的分叉（如代购可接受度、噪音容忍度、是否纳入延保），可用此工具确认。
+
+### 记忆
+
+仅在交互中发现可改进点时用 memory_write 记录改进经验（简短精要、凝练教训），不做会话流水账。
+
+**核心逻辑：独立性 × 交叉验证 × 去偏 × 时效 × 本地可保 = 接近真相的最优解。**

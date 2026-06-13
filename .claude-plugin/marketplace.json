@@ -11,7 +11,7 @@
     {
       "name": "cross-lingual-purchase-advisor",
       "description": "跨语言选购顾问 — 中英独立测评交叉验证、反事实去偏、识破假洋品牌、确认国行质保、量化持有成本。专治被返佣榜单/软文/水帖污染的 AI 选购建议。",
-      "version": "3.1.0",
+      "version": "3.2.0",
       "author": {
         "name": "miles-byted",
         "url": "https://github.com/miles-byted"
