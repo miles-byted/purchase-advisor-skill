@@ -146,7 +146,8 @@ description: Rigorous independent-review cross-validation methodology for produc
 | 3 | **产品页措辞**：详情页敢不敢写"原装进口/Made in [该国]" | 通篇回避产地、只写"[国名]品牌设计"、"Designed in X, Made in China" |
 | 4 | **独立测评是否提及**：该国独立测评站/社媒有无此牌 | 该国测评全网查无、社媒粉丝量与"大牌"不符 |
 
-> 🚩 **真实案例（见实录第六步）**：斐纳 TOMEFON 自述"德国斯图加特 1976 年创立"，工商主体却是广州斐纳科技（集群注册），产品页不敢写"进口"，德国本土独立测评查无 → **四查全红，判疑似假洋品牌排除**。
+> 🚩 **真实案例 1（扫地机篇第六步）**：斐纳 TOMEFON 自述"德国斯图加特 1976 年创立"，工商主体却是广州斐纳科技（集群注册），产品页不敢写"进口"，德国本土独立测评查无 → **四查全红，判疑似假洋品牌排除**。
+> 🚩 **真实案例 2（空净篇第六步）**：泰拉蒙 Telamon 自述"中美联合研发"，但其 [Red Dot Award 2025 获奖页](https://www.red-dot.org/project/telamon-air-purifier-series-63566)明确标注 Manufacturer 为 **HEALTHLEAD CORPORATION LIMITED, Shenzhen, China**（深圳健莱），设计方是北京航空航天大学 + 北京 sxdesign，美国独立测评（CR/RTINGS/Wirecutter/HouseFresh）全无收录 → **四查全红，判假洋品牌排除**。**这条提醒**：奖项材料里的"Manufacturer"一栏经常是绕过营销页面、拿到真主体的最直接渠道。
 
 输出：真实国际品牌 / 疑似假洋品牌 / 无法确认。**判定须附上四查里命中的具体红旗，不许只给结论。**
 
